@@ -1,0 +1,131 @@
+<ng-container [ngSwitch]="component">
+    <ng-container *ngSwitchCase="'text-input'">
+        <app-text-input
+            [formControl]="control"
+            [label]="label"
+            [placeholder]="config?.placeholder"
+            [mode]="mode"
+            [type]="config?.type || 'text'"
+        ></app-text-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'boolean-input'">
+        <app-boolean-input
+            [formControl]="control"
+            [label]="label"
+            [mode]="mode"
+        ></app-boolean-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'textarea-input'">
+        <app-textarea-input
+            [formControl]="control"
+            [label]="label"
+            [placeholder]="config?.placeholder"
+            [mode]="mode"
+        ></app-textarea-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'richtext-input'">
+        <app-richtext-input
+            [formControl]="control"
+            [label]="label"
+            [placeholder]="config?.placeholder"
+        ></app-richtext-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'content-input'">
+        <app-content-input
+            [formControl]="control"
+            [label]="label"
+            [multiple]="!!config?.multiple"
+            [contentType]="config?.contentType"
+        ></app-content-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'image-input'">
+        <app-image-input
+            [formControl]="control"
+            [label]="label"
+            [multiple]="!!config?.multiple"
+        ></app-image-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'dynamic-file-input'">
+        <app-file-input
+            [formControl]="control"
+            [multiple]="!!config?.multiple"
+            [label]="label"
+        ></app-file-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'data-input'">
+        <app-data-input
+            [formControl]="control"
+            [label]="label"
+            [endpoint]="endpoint"
+            [itemLabel]="itemLabel"
+            [itemValue]="itemValue"
+        ></app-data-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'song-input'">
+        <app-song-input
+            [formControl]="control"
+            [label]="label"
+        ></app-song-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'tag-input'">
+        <app-tag-input
+            [formControl]="control"
+            [label]="label"
+        ></app-tag-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'repeater'">
+        <app-repeater
+            [formControl]="control"
+            [label]="label"
+            [subfields]="subfields"
+        ></app-repeater>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'content-input'">
+        <app-data-input
+            [formControl]="control"
+            [label]="label"
+            [endpoint]="'content-types/' + config?.contentTypeUuid + '/content'"
+            [itemLabel]="['name']"
+            [itemValue]="['uuid']"
+        ></app-data-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'page-input'">
+        <app-data-input
+            [formControl]="control"
+            [label]="label"
+            [endpoint]="'page-types/overview'"
+            [itemLabel]="['name']"
+            [itemValue]="['uuid']"
+        ></app-data-input>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'content-type-input'">
+        <app-data-input
+            [formControl]="control"
+            [label]="label"
+            endpoint="content-types"
+            [itemLabel]="['name']"
+            [itemValue]="['uuid']"
+        ></app-data-input>
+    </ng-container>
+
+    <ng-container *ngSwitchDefault>
+        <app-text-input
+            [formControl]="control"
+            [label]="label"
+            [placeholder]="config?.placeholder"
+        ></app-text-input>
+    </ng-container>
+</ng-container>

@@ -1,0 +1,78 @@
+<app-header backLink="../" description="Content" [emptyTitle]="(mode === inputMode.EDIT ? 'Editing ' : 'Viewing ') + contentType?.name | singular">
+    <!-- <div class="action">
+        <ng-container *ngIf="mode === inputMode.EDIT">
+            <button type="submit" class="a-button a-button--warning" (click)="toggleMode(inputMode.VIEW)">Cancel</button>
+        </ng-container>
+        <ng-container *ngIf="mode === inputMode.VIEW">
+            <button type="submit" class="a-button" (click)="toggleMode(inputMode.EDIT)">Edit</button>
+        </ng-container>
+    </div> -->
+</app-header>
+<div class="o-page" *ngIf="form">
+    <div class="m-tab u-margin-bottom-xl">
+        <a [class]="{
+            'm-tab__item': true,
+            'm-tab__item--active': activeTab === 'meta'
+        }" href="#" (click)="setActiveTab($event, 'meta')">Meta</a>
+        <a [class]="{
+            'm-tab__item': true,
+            'm-tab__item--active': activeTab === 'status'
+        }" href="#" (click)="setActiveTab($event, 'status')">
+            Status
+            <div class="a-badge u-margin-left-xs">
+                <div [ngClass]="{
+                    'a-dot': true,
+                    'a-dot--success': content?.published,
+                    'a-dot--danger': !content?.published
+                }"></div>
+                {{ content?.published ? 'Published' : 'Unpublished'}}
+            </div>
+        </a>
+    </div>
+    <ng-container *ngIf="form">
+        <div class="o-page__section o-page__section--borderless" *ngIf="activeTab === 'meta'">
+            <app-text-input
+                label="Administration name"
+                [formControl]="form.get('name')"
+            ></app-text-input>
+            <app-text-input
+                label="Slug"
+                [formControl]="form.get('slug')"
+            ></app-text-input>
+        </div>
+        <div class="o-page__section o-page__section--borderless" *ngIf="activeTab === 'status'">
+            <app-date-input
+                [formControl]="form.get('publishScheduledAt')"
+                label="Publish time"
+                [disabled]="form?.get('published')?.value"
+            ></app-date-input>
+            <app-date-input
+                [formControl]="form.get('unPublishScheduledAt')"
+                label="Unpublish time"
+            ></app-date-input>
+            <app-boolean-input
+                [formControl]="form.get('published')"
+                label="Published"
+            ></app-boolean-input>
+        </div>
+    </ng-container>
+    <div class="o-page__section">
+        <div *ngFor="let field of contentType?.fields; let i = index">
+            <app-dynamic-input
+                [label]="field.name || ''"
+                [config]="field.config"
+                [component]="field.fieldType"
+                [subfields]="field.subfields"
+                [formControl]="form.get('fields')?.get(field.slug)"
+                [multiLanguage]="false"
+                [mode]="mode"
+            ></app-dynamic-input>
+        </div>
+    </div>
+    <div class="o-page__section" *ngIf="mode === inputMode.EDIT">
+        <div class="u-display--flex u-display--space-between">
+            <button type="submit" class="a-button a-button--success" (click)="submit($event)">Update</button>
+            <button type="submit" class="a-button a-button--danger a-button--outline" (confirm)="delete($event)">Delete</button>
+        </div>
+    </div>
+</div>

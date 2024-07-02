@@ -1,0 +1,67 @@
+version: "3"
+services:
+    api:
+        build:
+            context: api
+            dockerfile: Dockerfile.dev
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        container_name: radiopanel-api
+        volumes:
+            - ./api:/app:delegated
+            - ./uploads:/app/uploads:delegated
+        env_file:
+            - .env
+        ports:
+            - 3050:3050
+            - 9229:9229
+        networks:
+            - radiopanel
+
+    app:
+        build:
+            context: app
+            dockerfile: Dockerfile.dev
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        container_name: radiopanel-app
+        volumes:
+            - ./app:/app:delegated
+        ports:
+            - 3051:3051
+        networks:
+            - radiopanel
+
+    postgres:
+        image: "postgres:12.3-alpine"
+        container_name: postgres
+        environment:
+            POSTGRES_DB: radiopanel
+            POSTGRES_USER: localuser
+            POSTGRES_PASSWORD: EHajqEuoPG8wCxfcQRpz
+            PGDATA: /data/db
+        ports:
+            - 5432:5432
+        volumes:
+            - ./data:/data/db
+        networks:
+            - radiopanel
+
+    redis:
+        image: redis:6.0.6-alpine
+        container_name: redis
+        ports:
+            - 6379:6379
+        command: ["redis-server", "--appendonly", "yes"]
+        volumes:
+            - redis-data:/data
+        networks:
+            - radiopanel
+
+volumes:
+    postgres-data:
+    redis-data:
+    elastic-data:
+
+networks:
+    radiopanel:
